@@ -1,9 +1,11 @@
 src/
+scripts/
 dist/__tests__/
 coverage/
 .env
 .env.*
+.editorconfig
 jest.config.ts
 tsconfig.json
-gulpfile.js
 *.js.map
+.github/
