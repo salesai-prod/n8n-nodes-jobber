@@ -1,0 +1,9 @@
+src/
+dist/__tests__/
+coverage/
+.env
+.env.*
+jest.config.ts
+tsconfig.json
+gulpfile.js
+*.js.map

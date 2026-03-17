@@ -31,6 +31,8 @@ import {
 	JOBS_SCHEDULE,
 } from './JobberGraphql';
 
+const MAX_PAGINATION_PAGES = 50;
+
 export class Jobber implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Jobber',
@@ -80,9 +82,7 @@ export class Jobber implements INodeType {
 							id: customerId,
 						});
 						responseData = (result as { client: unknown }).client;
-					}
-
-					if (operation === 'search') {
+					} else if (operation === 'search') {
 						const searchTerm = this.getNodeParameter('searchTerm', i) as string;
 						const limit = this.getNodeParameter('limit', i) as number;
 						const result = await jobberGraphqlRequest.call(this, CLIENTS_SEARCH, {
@@ -90,9 +90,7 @@ export class Jobber implements INodeType {
 							searchTerm,
 						});
 						responseData = (result as { clients: { nodes: unknown[] } }).clients.nodes;
-					}
-
-					if (operation === 'create') {
+					} else if (operation === 'create') {
 						const firstName = this.getNodeParameter('firstName', i) as string;
 						const lastName = this.getNodeParameter('lastName', i) as string;
 						const additionalFields = this.getNodeParameter('additionalFields', i) as {
@@ -171,19 +169,15 @@ export class Jobber implements INodeType {
 
 						responseData = createResult.clientCreate.client;
 					}
-				}
-
 				// ─── Job ─────────────────────────────────────────────────────
-				if (resource === 'job') {
+				} else if (resource === 'job') {
 					if (operation === 'get') {
 						const jobId = this.getNodeParameter('jobId', i) as string;
 						const result = await jobberGraphqlRequest.call(this, JOB_GET, {
 							id: jobId,
 						});
 						responseData = (result as { job: unknown }).job;
-					}
-
-					if (operation === 'create') {
+					} else if (operation === 'create') {
 						const clientId = this.getNodeParameter('clientId', i) as string;
 						const title = this.getNodeParameter('title', i) as string;
 						const startAt = this.getNodeParameter('startAt', i) as string;
@@ -239,16 +233,22 @@ export class Jobber implements INodeType {
 
 						responseData = createResult.jobCreate.job;
 					}
-				}
-
 				// ─── Schedule ────────────────────────────────────────────────
-				if (resource === 'schedule') {
+				} else if (resource === 'schedule') {
 					if (operation === 'getAvailability') {
 						const scheduleStartDate = this.getNodeParameter('scheduleStartDate', i) as string;
 						const scheduleEndDate = this.getNodeParameter('scheduleEndDate', i) as string;
 						const slotDuration = this.getNodeParameter('slotDuration', i) as number;
 						const workingHoursStart = this.getNodeParameter('workingHoursStart', i) as number;
 						const workingHoursEnd = this.getNodeParameter('workingHoursEnd', i) as number;
+
+						if (workingHoursStart >= workingHoursEnd) {
+							throw new NodeOperationError(
+								this.getNode(),
+								`Working hours start (${workingHoursStart}) must be less than end (${workingHoursEnd})`,
+								{ itemIndex: i },
+							);
+						}
 
 						// Fetch all jobs in the date range
 						const bookedSlots = await fetchAllJobsInRange.call(
@@ -346,8 +346,11 @@ async function fetchAllJobsInRange(
 	const bookedSlots: BookedSlot[] = [];
 	let hasNextPage = true;
 	let cursor: string | undefined;
+	let pageCount = 0;
 
-	while (hasNextPage) {
+	while (hasNextPage && pageCount < MAX_PAGINATION_PAGES) {
+		pageCount++;
+
 		const variables: Record<string, unknown> = {
 			first: 100,
 			filter: {
@@ -418,29 +421,29 @@ function computeAvailability(
 	const start = new Date(startDate);
 	const end = new Date(endDate);
 
-	// Iterate day by day
+	// Iterate day by day in UTC
 	const current = new Date(start);
-	current.setHours(0, 0, 0, 0);
+	current.setUTCHours(0, 0, 0, 0);
 
 	while (current <= end) {
-		const dayOfWeek = current.getDay();
+		const dayOfWeek = current.getUTCDay();
 		// Skip weekends (0 = Sunday, 6 = Saturday)
 		if (dayOfWeek === 0 || dayOfWeek === 6) {
-			current.setDate(current.getDate() + 1);
+			current.setUTCDate(current.getUTCDate() + 1);
 			continue;
 		}
 
 		// Generate candidate slots for this day
 		const dayStart = new Date(current);
-		dayStart.setHours(workingHoursStart, 0, 0, 0);
+		dayStart.setUTCHours(workingHoursStart, 0, 0, 0);
 
 		const dayEnd = new Date(current);
-		dayEnd.setHours(workingHoursEnd, 0, 0, 0);
+		dayEnd.setUTCHours(workingHoursEnd, 0, 0, 0);
 
 		const slotStart = new Date(dayStart);
 
-		while (slotStart.getTime() + slotDurationMinutes * 60 * 1000 <= dayEnd.getTime()) {
-			const slotEnd = new Date(slotStart.getTime() + slotDurationMinutes * 60 * 1000);
+		while (slotStart.getTime() + slotDurationMinutes * 60_000 <= dayEnd.getTime()) {
+			const slotEnd = new Date(slotStart.getTime() + slotDurationMinutes * 60_000);
 
 			// Check if this slot overlaps with any booked slot
 			const isBooked = bookedSlots.some((booked) => {
@@ -451,19 +454,23 @@ function computeAvailability(
 
 			if (!isBooked) {
 				const dateStr = current.toISOString().split('T')[0];
+				const startHH = String(slotStart.getUTCHours()).padStart(2, '0');
+				const startMM = String(slotStart.getUTCMinutes()).padStart(2, '0');
+				const endHH = String(slotEnd.getUTCHours()).padStart(2, '0');
+				const endMM = String(slotEnd.getUTCMinutes()).padStart(2, '0');
 				openSlots.push({
 					date: dateStr,
-					startTime: slotStart.toTimeString().slice(0, 5),
-					endTime: slotEnd.toTimeString().slice(0, 5),
+					startTime: `${startHH}:${startMM}`,
+					endTime: `${endHH}:${endMM}`,
 					startAt: slotStart.toISOString(),
 					endAt: slotEnd.toISOString(),
 				});
 			}
 
-			slotStart.setTime(slotStart.getTime() + slotDurationMinutes * 60 * 1000);
+			slotStart.setTime(slotStart.getTime() + slotDurationMinutes * 60_000);
 		}
 
-		current.setDate(current.getDate() + 1);
+		current.setUTCDate(current.getUTCDate() + 1);
 	}
 
 	return openSlots;
