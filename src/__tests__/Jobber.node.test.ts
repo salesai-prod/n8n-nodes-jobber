@@ -1,8 +1,4 @@
-import type {
-	IExecuteFunctions,
-	INodeExecutionData,
-} from 'n8n-workflow';
-import { NodeApiError, NodeOperationError } from 'n8n-workflow';
+import type { IExecuteFunctions } from 'n8n-workflow';
 import { Jobber } from '../nodes/Jobber/Jobber.node';
 
 // ─── Mock helpers ────────────────────────────────────────────────────────────
@@ -704,7 +700,7 @@ describe('GraphQL request formatting', () => {
 		const options = callArgs[1];
 		expect(options.method).toBe('POST');
 		expect(options.uri).toBe('https://api.getjobber.com/api/graphql');
-		expect(options.headers['X-JOBBER-GRAPHQL-VERSION']).toBe('2025-01-20');
+		expect(options.headers['X-JOBBER-GRAPHQL-VERSION']).toBe('2025-04-16');
 		expect(options.headers['Content-Type']).toBe('application/json');
 		expect(options.body).toHaveProperty('query');
 		expect(options.body).toHaveProperty('variables');

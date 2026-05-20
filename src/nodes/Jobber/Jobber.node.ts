@@ -47,6 +47,7 @@ export class Jobber implements INodeType {
 		},
 		inputs: ['main'],
 		outputs: ['main'],
+		usableAsTool: true,
 		credentials: [
 			{
 				name: 'jobberOAuth2Api',

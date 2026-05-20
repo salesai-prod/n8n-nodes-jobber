@@ -4,6 +4,8 @@ An [n8n](https://n8n.io/) community node for [Jobber](https://getjobber.com/) â€
 
 This node lets you automate Jobber workflows directly from n8n, including managing customers, creating jobs, and finding open schedule availability.
 
+It uses Jobber's GraphQL API version `2025-04-16`.
+
 ## Installation
 
 ### In n8n (recommended)
@@ -15,7 +17,8 @@ This node lets you automate Jobber workflows directly from n8n, including managi
 ### Manual
 
 ```bash
-cd ~/.n8n
+mkdir -p ~/.n8n/nodes
+cd ~/.n8n/nodes
 npm install @salesai-prod/n8n-nodes-jobber
 ```
 
@@ -72,7 +75,7 @@ The availability operation computes open slots by:
 
 ### Prerequisites
 
-- Node.js >= 18
+- Node.js >= 20.19 and <= 24
 - npm
 
 ### Setup
@@ -87,6 +90,7 @@ npm install
 
 ```bash
 npm run build          # Compile TypeScript and copy icons
+npm run lint           # Run ESLint
 npm run dev            # Watch mode for development
 npm test               # Run tests
 npm run test:coverage  # Run tests with coverage report
@@ -100,13 +104,13 @@ The project uses Jest with ts-jest. Tests mock the n8n execution context and OAu
 npm test
 ```
 
-To test with a live n8n instance, link the package locally:
+To test with a live n8n instance, install the packed artifact into n8n's community node folder:
 
 ```bash
-npm run build
-npm link
-cd ~/.n8n
-npm link @salesai-prod/n8n-nodes-jobber
+npm pack
+mkdir -p ~/.n8n/nodes
+cd ~/.n8n/nodes
+npm install /path/to/n8n-nodes-jobber/salesai-prod-n8n-nodes-jobber-0.1.0.tgz
 ```
 
 Restart n8n and the Jobber node will appear in the node picker.
@@ -127,7 +131,15 @@ src/
 
 ## API Reference
 
-This node uses the [Jobber GraphQL API](https://developer.getjobber.com/docs/) (version `2025-01-20`).
+This node uses the [Jobber GraphQL API](https://developer.getjobber.com/docs/) (version `2025-04-16`).
+
+## Publishing
+
+This is a scoped public package. Publish from GitHub Actions with npm provenance:
+
+1. Add the repository as a trusted publisher in npm package settings.
+2. Create a GitHub release or run the publish workflow manually.
+3. The workflow runs lint, tests, build, and `npm publish --access public --provenance`.
 
 ## License
 
