@@ -2,13 +2,13 @@
   "name": "@salesai-prod/n8n-nodes-jobber",
   "version": "0.1.0",
   "description": "n8n community node for Jobber field service management",
-  "homepage": "https://github.com/salesai-prod/n8n-nodes-jobber#readme",
+  "homepage": "https://github.com/ericmey/n8n-nodes-jobber#readme",
   "bugs": {
-    "url": "https://github.com/salesai-prod/n8n-nodes-jobber/issues"
+    "url": "https://github.com/ericmey/n8n-nodes-jobber/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/salesai-prod/n8n-nodes-jobber.git"
+    "url": "git+https://github.com/ericmey/n8n-nodes-jobber.git"
   },
   "keywords": [
     "n8n-community-node-package",

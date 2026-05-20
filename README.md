@@ -81,7 +81,7 @@ The availability operation computes open slots by:
 ### Setup
 
 ```bash
-git clone https://github.com/salesai-prod/n8n-nodes-jobber.git
+git clone https://github.com/ericmey/n8n-nodes-jobber.git
 cd n8n-nodes-jobber
 npm install
 ```
