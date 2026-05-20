@@ -1,5 +1,5 @@
 {
-  "name": "@salesai-prod/n8n-nodes-jobber",
+  "name": "@ericmey/n8n-nodes-jobber",
   "version": "0.1.0",
   "description": "n8n community node for Jobber field service management",
   "homepage": "https://github.com/ericmey/n8n-nodes-jobber#readme",

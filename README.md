@@ -11,7 +11,7 @@ It uses Jobber's GraphQL API version `2025-04-16`.
 ### In n8n (recommended)
 
 1. Go to **Settings > Community Nodes**
-2. Enter `@salesai-prod/n8n-nodes-jobber`
+2. Enter `@ericmey/n8n-nodes-jobber`
 3. Click **Install**
 
 ### Manual
@@ -19,7 +19,7 @@ It uses Jobber's GraphQL API version `2025-04-16`.
 ```bash
 mkdir -p ~/.n8n/nodes
 cd ~/.n8n/nodes
-npm install @salesai-prod/n8n-nodes-jobber
+npm install @ericmey/n8n-nodes-jobber
 ```
 
 Restart n8n after installation.
@@ -110,7 +110,7 @@ To test with a live n8n instance, install the packed artifact into n8n's communi
 npm pack
 mkdir -p ~/.n8n/nodes
 cd ~/.n8n/nodes
-npm install /path/to/n8n-nodes-jobber/salesai-prod-n8n-nodes-jobber-0.1.0.tgz
+npm install /path/to/n8n-nodes-jobber/ericmey-n8n-nodes-jobber-0.1.0.tgz
 ```
 
 Restart n8n and the Jobber node will appear in the node picker.

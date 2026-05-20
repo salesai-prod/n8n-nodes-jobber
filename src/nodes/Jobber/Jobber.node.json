@@ -1,5 +1,5 @@
 {
-	"node": "@salesai-prod/n8n-nodes-jobber.jobber",
+	"node": "@ericmey/n8n-nodes-jobber.jobber",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Utility"],

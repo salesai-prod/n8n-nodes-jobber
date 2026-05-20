@@ -34,7 +34,7 @@ Package the node and install it into a local n8n user folder:
 npm pack
 mkdir -p ~/.n8n/nodes
 cd ~/.n8n/nodes
-npm install /path/to/n8n-nodes-jobber/salesai-prod-n8n-nodes-jobber-0.1.0.tgz
+npm install /path/to/n8n-nodes-jobber/ericmey-n8n-nodes-jobber-0.1.0.tgz
 ```
 
 Restart n8n and confirm the Jobber node appears in the node picker.
