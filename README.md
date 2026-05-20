@@ -75,7 +75,7 @@ The availability operation computes open slots by:
 
 ### Prerequisites
 
-- Node.js >= 20.19 and <= 24
+- Node.js >= 22 and <= 24
 - npm
 
 ### Setup

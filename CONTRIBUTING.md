@@ -10,7 +10,7 @@ Thanks for helping improve the Jobber community node for n8n.
 
 ## Development Setup
 
-Use a Node.js version supported by n8n:
+Use a Node.js version supported by this package:
 
 ```bash
 nvm use

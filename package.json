@@ -24,7 +24,7 @@
     "provenance": true
   },
   "engines": {
-    "node": ">=20.19 <=24"
+    "node": ">=22 <=24"
   },
   "scripts": {
     "build": "npm run clean && tsc && npm run copy:icons",
@@ -59,7 +59,7 @@
     "@types/node": "^20.0.0",
     "eslint": "^9.0.0",
     "jest": "^30.3.0",
-    "n8n-workflow": "^2.20.3",
+    "n8n-workflow": "2.20.3",
     "prettier": "^3.0.0",
     "ts-jest": "^29.4.6",
     "typescript": "~5.9.2"
