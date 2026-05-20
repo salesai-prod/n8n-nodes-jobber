@@ -3,7 +3,7 @@
  */
 
 export const GRAPHQL_API_URL = 'https://api.getjobber.com/api/graphql';
-export const GRAPHQL_API_VERSION = '2025-01-20';
+export const GRAPHQL_API_VERSION = '2025-04-16';
 
 // ─── Customer (Client) Queries ───────────────────────────────────────────────
 

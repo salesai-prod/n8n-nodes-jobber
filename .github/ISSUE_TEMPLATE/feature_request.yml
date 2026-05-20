@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest a Jobber operation or n8n workflow improvement
+title: "Feature: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What workflow are you trying to automate?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the Jobber resource, operation, fields, or behavior you need.
+    validations:
+      required: true
+  - type: textarea
+    id: api
+    attributes:
+      label: Jobber API reference
+      description: Link to relevant Jobber API docs, if known.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

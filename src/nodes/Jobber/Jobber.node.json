@@ -1,0 +1,16 @@
+{
+	"node": "@ericmey/n8n-nodes-jobber.jobber",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Utility"],
+	"subcategories": {
+		"Utility": ["Other"]
+	},
+	"resources": {
+		"primaryDocumentation": [
+			{
+				"url": "https://developer.getjobber.com/docs/"
+			}
+		]
+	}
+}
